@@ -30,10 +30,16 @@ class MyAI ( Agent ):
         self._senses = []
         self._potentialdanj = []
         self._safe_zones = [[1, 1]]
-        self.node_dict = defaultdict(lambda: 0)
-        # self.node_dict[[1, 1]] = 1
+        self.node_dict = [[1,1]]
         self._state = [[self._dir, self._coord]]
-        self._range =[]
+        self._range = [
+            [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1],
+            [1, 2], [2, 2], [3, 2], [4, 2], [5, 2], [6, 2], [7, 2], [8, 2],
+            [1, 3], [2, 3], [3, 3], [4, 3], [5, 3], [6, 3], [7, 3], [8, 3],
+            [1, 4], [2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4], [8, 4],
+            [1, 5], [2, 5], [3, 5], [4, 5], [5, 5], [6, 5], [7, 5], [8, 5],
+            [1, 6], [2, 6], [3, 6], [4, 6], [5, 6], [6, 6], [7, 6], [8, 6],
+            [1, 7], [2, 7], [3, 7], [4, 7], [5, 7], [6, 7], [7, 7], [8, 7]]
         self.gold_grabbed = False
         self.shortest_path = []
         #############################
@@ -46,25 +52,37 @@ class MyAI ( Agent ):
         self._state.append([self._count, self._dir, self._coord])
 
     def calc_safety(self, stench, breeze, bump):
+        print("BUMP", bump)
         if bump:
+            print("got into bump!!!!!")
             if self._dir == "right":
-                for i in range(len(self._range)):
-                    if self._range[i][0]== self._coord[0]+1:
-                        self._range.remove(self._range[i])
+                print("right")
+                y = self._range[-1][1]
+                self._range.clear()
+                for i in range(self._coord[0] - 1):
+                    for j in range(y):
+                        self._range.append([i + 1, j + 1])
+                self._coord = self.left
+                print(self._range)
             elif self._dir == "top":
-                for i in range(len(self._range)):
-                    if self._range[i][1]== self._coord[1]+1:
-                        self._range.remove(self._range[i])
+                x = self._range[-1][0]
+                self._range.clear()
+                for i in range(x):
+                    for j in range(self._coord[1] -1):
+                        self._range.append([i +1, j + 1])
+                self._coord = self.down
+
         if not stench and not breeze:
-            if self.right in self._range:
+            if self.right in self._range and self.right not in self._safe_zones:
                 self._safe_zones.append(self.right)
-            if self.left in self._range:
+            if self.left in self._range and self.right not in self._safe_zones:
                 self._safe_zone.append(self.left)
-            if self.top in self._range:
+            if self.top in self._range and self.right not in self._safe_zones:
                 self._safe_zones.append(self.top)
-            if self.down in self._range:
+            if self.down in self._range and self.right not in self._safe_zones:
                 self._safe_zones.append(self.down)
         else:
+            print("breeze or stench")
             if (self.right in self._range) and (self.right not in self._safe_zones):
                 self._potentialdanj.append(self.right)
             if (self.left in self._range) and (self.left not in self._safe_zones):
@@ -73,6 +91,8 @@ class MyAI ( Agent ):
                 self._potentialdanj.append(self.top)
             if (self.down in self._range) and (self.down not in self._safe_zones):
                 self._potentialdanj.append(self.down)
+
+
 
     def trackAndClimb(self):
         if self._coord == [1, 1]:
@@ -85,7 +105,7 @@ class MyAI ( Agent ):
                 else:
                     break
         else:
-            for i in range(l +1 , 0, -1):
+            for i in range(len(self.shortest_path) - 1, -1, -1):
                 self.go_back(self.shortest_path, i)
 
     def go_back(self, path, i):
@@ -121,33 +141,36 @@ class MyAI ( Agent ):
                 return Agent.Action.TURN_LEFT
 
     def getAction(self, stench, breeze, glitter, bump, scream):
+        if (breeze or stench) and (self._coord == [1,1]):
+            return Agent.Action.CLIMB
         self._count += 1
+        print("bump in getAcytion:", bump)
         self.calc_safety(stench, breeze, bump)
         if self.gold_grabbed:
             self.trackAndClimb()
-
         if glitter:
             self.gold_grabbed = True
             return Agent.Action.GRAB
 
         if self._dir == "right":
+            print(stench, breeze)
             if self.right in self._safe_zones:
-                if self.node_dict[self.right] == 3:
+                if self.node_dict.count(self.right) == 3:
                     self.trackAndClimb()
                 else:
                     self._coord = self.right
-                    self.node_dict[self.right] += 1
+                    self.node_dict.append(self.right)
                     self.update_state()
                     return Agent.Action.FORWARD
             if self.top in self._safe_zones:
-                if self.node_dict[self.top] == 3:
+                if self.node_dict.count(self.top) == 3:
                     self.trackAndClimb()
                 else:
                     self._dir = "top"
                     self.update_state()
                     return Agent.Action.TURN_LEFT
             if self.down in self._safe_zones:
-                if self.node_dict[self.down] == 3:
+                if self.node_dict.count(self.down) == 3:
                     self.trackAndClimb()
                 else:
                     self._dir = "down"
@@ -156,22 +179,22 @@ class MyAI ( Agent ):
 
         if self._dir == "top":
             if self.top in self._safe_zones:
-                if self.node_dict[self.top] == 3:
+                if self.node_dict.count(self.top) == 3:
                     self.trackAndClimb()
                 else:
                     self._coord = self.top
-                    self.node_dict[self.top] += 1
+                    self.node_dict.append(self.top)
                     self.update_state()
                     return Agent.Action.FORWARD
             if self.right in self._safe_zones:
-                if self.node_dict[self.right] == 3:
+                if self.node_dict.count(self.right) == 3:
                     self.trackAndClimb()
                 else:
                     self._dir = "right"
                     self.update_state()
                     return Agent.Action.TURN_RIGHT
             if self.left in self._safe_zones:
-                if self.node_dict[self.left] ==3:
+                if self.node_dict.count(self.left) ==3:
                     self.trackAndClimb()
                 else:
                     self._dir = "left"
@@ -180,22 +203,22 @@ class MyAI ( Agent ):
 
         if self._dir == "down":
             if self.down in self._safe_zones:
-                if self.node_dict[self.down] == 3:
+                if self.node_dict.count(self.down) == 3:
                     self.trackAndClimb()
                 else:
                     self._coord = self.down
-                    self.node_dict[self.down] += 1
+                    self.node_dict.append(self.down)
                     self.update_state()
                     return Agent.Action.FORWARD
             if self.left in self._safe_zones:
-                if self.node_dict[self.left] == 3:
+                if self.node_dict.count(self.left) == 3:
                     self.trackAndClimb()
                 else:
                     self._dir = "right"
                     self.update_state()
                     return Agent.Action.TURN_RIGHT
             if self.right in self._safe_zones:
-                if self.node_dict[self.right] == 3:
+                if self.node_dict.count(self.right) == 3:
                     self.trackAndClimb()
                 else:
                     self._dir = "left"
@@ -204,22 +227,22 @@ class MyAI ( Agent ):
 
         if self._dir == "left":
             if self.left in self._safe_zones:
-                if self.node_dict[self.left] == 3:
+                if self.node_dict.count(self.left) == 3:
                     self.trackAndClimb()
                 else:
                     self._coord = self.left
-                    self.node_dict[self.left] += 1
+                    self.node_dict.append(self.left)
                     self.update_state()
                     return Agent.Action.FORWARD
             if self.top in self._safe_zones:
-                if self.node_dict[self.top] == 3:
+                if self.node_dict.count(self.top) == 3:
                     self.trackAndClimb()
                 else:
                     self._dir = "top"
                     self.update_state()
                     return Agent.Action.TURN_RIGHT
             if self.down in self._safe_zones:
-                if self.node_dict[self.down] == 3:
+                if self.node_dict.count(self.down) == 3:
                     self.trackAndClimb()
                 else:
                     self._dir = "down"
