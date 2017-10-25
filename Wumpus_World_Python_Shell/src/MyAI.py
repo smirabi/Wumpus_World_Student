@@ -75,11 +75,11 @@ class MyAI ( Agent ):
         if not stench and not breeze:
             if self.right in self._range and self.right not in self._safe_zones:
                 self._safe_zones.append(self.right)
-            if self.left in self._range and self.right not in self._safe_zones:
-                self._safe_zone.append(self.left)
-            if self.top in self._range and self.right not in self._safe_zones:
+            if self.left in self._range and self.left not in self._safe_zones:
+                self._safe_zones.append(self.left)
+            if self.top in self._range and self.top not in self._safe_zones:
                 self._safe_zones.append(self.top)
-            if self.down in self._range and self.right not in self._safe_zones:
+            if self.down in self._range and self.down not in self._safe_zones:
                 self._safe_zones.append(self.down)
         else:
             print("breeze or stench")
@@ -141,6 +141,10 @@ class MyAI ( Agent ):
                 return Agent.Action.TURN_LEFT
 
     def getAction(self, stench, breeze, glitter, bump, scream):
+        self.right = [self._coord[0] + 1, self._coord[1]]
+        self.left = [self._coord[0] - 1, self._coord[1]]
+        self.top = [self._coord[0], self._coord[1] + 1]
+        self.down = [self._coord[0], self._coord[1] - 1]
         if (breeze or stench) and (self._coord == [1,1]):
             return Agent.Action.CLIMB
         self._count += 1
