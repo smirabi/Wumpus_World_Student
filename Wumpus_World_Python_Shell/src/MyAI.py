@@ -48,7 +48,7 @@ class MyAI(Agent):
         self.down = [self._coord[0], self._coord[1] - 1]
 
     def update_state(self):
-        self._state.append([self._count, self._dir, self._coord])
+        self._state.append([self._dir, self._coord])
 
     def calc_safety(self, stench, breeze, bump):
         print("BUMP", bump)
@@ -65,7 +65,6 @@ class MyAI(Agent):
                 self._coord = self.left
                 print(self._range)
 
-
             elif self._dir == "top":
                 x = self._range[-1][0]
                 self._range.clear()
@@ -75,6 +74,8 @@ class MyAI(Agent):
                 self._safe_zones.remove(self._coord)    #added
                 self._coord = self.down
                 print(self._range)
+            self._state.remove(self._state[-1])
+            print("self._state after removing the last value in bump: ", self._state)
 
 
         if not stench and not breeze:
@@ -110,41 +111,52 @@ class MyAI(Agent):
                     self.shortest_path.append(s)
                 else:
                     break
+            for i in range(len(self.shortest_path) - 1, -1, -1):
+                self.go_back(self.shortest_path, i)
         else:
             for i in range(len(self.shortest_path) - 1, -1, -1):
                 self.go_back(self.shortest_path, i)
 
     def go_back(self, path, i):
+        print("this is shortest path: ", path)
         print("GOING BACK")
         if self._coord == [1, 1]:
             return Agent.Action.CLIMB
         if path[i][0] == "right":
             if self._dir == "left":
+                print("check point 1.1")
                 path.pop(i)
                 self._coord = self.left
                 return Agent.Action.FORWARD
             else:
+                print("check point 1.2")
                 return Agent.Action.TURN_LEFT
         if path[i][0] == "left":
             if self._dir == "right":
+                print("check point 2.1")
                 path.pop(i)
                 self._coord = self.right
                 return Agent.Action.FORWARD
             else:
+                print("check point 2.2")
                 return Agent.Action.TURN_LEFT
         if path[i][0] == "top":
             if self._dir == "down":
+                print("check point 3.1")
                 path.pop(i)
                 self._coord = self.down
                 return Agent.Action.FORWARD
             else:
+                print("check point 3.2")
                 return Agent.Action.TURN_LEFT
         if path[i][0] == "down":
             if self._dir == "top":
+                print("check point 4.1")
                 path.pop(i)
                 self._coord = self.top
                 return Agent.Action.FORWARD
             else:
+                print("check point 4.2")
                 return Agent.Action.TURN_LEFT
 
     def getAction(self, stench, breeze, glitter, bump, scream):
@@ -205,9 +217,11 @@ class MyAI(Agent):
             if bump:
                 if self._coord[0]-1 >= 3:
                     self._dir = "left"
+                    self.update_state()
                     return Agent.Action.TURN_LEFT
                 else:
                     self._dir = "right"
+                    self.update_state()
                     return Agent.Action.TURN_RIGHT
             else:
                 if self.top in self._safe_zones:
