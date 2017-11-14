@@ -184,6 +184,7 @@ class MyAI(Agent):
                     return Agent.Action.TURN_LEFT
         #############################################################################################
         else:
+            
 
             if self._dir == "right":
 
