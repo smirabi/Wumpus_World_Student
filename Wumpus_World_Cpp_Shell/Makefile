@@ -7,8 +7,7 @@
 #              may use the following commands:
 #
 #              - make            - compiles the project and places
-#                                  the python bytecode files in the bin
-#                                  folder
+#                                  the executable in the bin folder
 #
 #              - make submission - creates the the submission, you will
 #                                  submit.
@@ -17,12 +16,14 @@
 # ======================================================================
 
 RAW_SOURCES = \
-	Agent.py\
-	Main.py\
-	MyAI.py\
-	RandomAI.py\
-	ManualAI.py\
-	World.py
+	Agent.hpp\
+	Main.cpp\
+	MyAI.cpp\
+	MyAI.hpp\
+	RandomAI.hpp\
+	ManualAI.hpp\
+	World.cpp\
+	World.hpp
 
 SOURCE_DIR = src
 BIN_DIR = bin
@@ -30,22 +31,10 @@ DOC_DIR = doc
 SOURCES = $(foreach s, $(RAW_SOURCES), $(SOURCE_DIR)/$(s))
 
 all: $(SOURCES)
-	@-eval `'/usr/bin/tclsh' '/pkg/modules/modulecmd.tcl' 'bash' load python/3.5.2` ; \
-	 if hash python3 &> /dev/null ; \
-	 then \
-		python3 -m compileall -q src ; \
-	 else \
-		python -m compileall -q src ; \
-	 fi
 	@rm -rf $(BIN_DIR)
 	@mkdir -p $(BIN_DIR)
 	@mkdir -p $(DOC_DIR)
-	@cp -a src/__pycache__/. bin
-	@for file in bin/* ; \
-	do \
-		mv -f $$file $${file%%.*}.pyc; \
-	done
-	@rm -rf src/__pycache__/
+	@g++ -std=c++0x $(SOURCES) -o $(BIN_DIR)/Wumpus_World
 
 submission: all
 	@rm -f *.zip
@@ -53,4 +42,3 @@ submission: all
 	@read -p "Enter Team Name (No spaces, '_', '/', '*'): " teamName; \
 	 echo ""; \
 	 zip -rqq s_$${teamName}.zip $(SOURCE_DIR) $(BIN_DIR) $(DOC_DIR)
-
