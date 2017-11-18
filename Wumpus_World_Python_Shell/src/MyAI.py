@@ -26,10 +26,10 @@ class MyAI(Agent):
         self._coord = [1, 1]
         self._dir = "right"
         self._senses = []
-        self._potentialdanj = []
+        # self._potentialdanj = []
         self._safe_zones = [[1, 1]]
         self.node_dict = [[1, 1]]
-        self._state = [[self._dir, self._coord]]
+        #self._state = [[self._dir, self._coord]]
         self._range = [
             [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1],
             [1, 2], [2, 2], [3, 2], [4, 2], [5, 2], [6, 2], [7, 2], [8, 2],
@@ -60,8 +60,8 @@ class MyAI(Agent):
         self.bump = False
         self.scream = False
 
-    def update_state(self):
-        self._state.append([self._dir, self._coord])
+    # def update_state(self):
+    #     self._state.append([self._dir, self._coord])
 
     def update_dir(self):
         self.right = [self._coord[0] + 1, self._coord[1]]
@@ -89,7 +89,7 @@ class MyAI(Agent):
                 self._safe_zones.remove(self._coord)
                 self.go_to.remove(self._coord)
                 self._coord = self.down
-            self._state.remove(self._state[-1])
+            #self._state.remove(self._state[-1])
 
         if not stench and not breeze:
             if self.right in self._range and self.right not in self._safe_zones:
@@ -104,28 +104,29 @@ class MyAI(Agent):
             if self.down in self._range and self.down not in self._safe_zones:
                 self._safe_zones.append(self.down)
                 self.go_to.append(self.down)
-        else:
-            if (self.right in self._range) and (self.right not in self._safe_zones):
-                self._potentialdanj.append(self.right)
-            if (self.left in self._range) and (self.left not in self._safe_zones):
-                self._potentialdanj.append(self.left)
-            if (self.top in self._range) and (self.top not in self._safe_zones):
-                self._potentialdanj.append(self.top)
-            if (self.down in self._range) and (self.down not in self._safe_zones):
-                self._potentialdanj.append(self.down)
+        # else:
+        #     if (self.right in self._range) and (self.right not in self._safe_zones):
+        #         self._potentialdanj.append(self.right)
+        #     if (self.left in self._range) and (self.left not in self._safe_zones):
+        #         self._potentialdanj.append(self.left)
+        #     if (self.top in self._range) and (self.top not in self._safe_zones):
+        #         self._potentialdanj.append(self.top)
+        #     if (self.down in self._range) and (self.down not in self._safe_zones):
+        #         self._potentialdanj.append(self.down)
 
     def go_to_huristic(self):
-        closest_set = set()
+        closest_set = []
         for i, c in enumerate(self.go_to):
-            closest_set.add( (math.sqrt((self._coord[0] - c[0])**2 + (self._coord[1] - c[1])**2), c) )
+            closest_set.append( (math.sqrt((self._coord[0] - c[0])**2 + (self._coord[1] - c[1])**2), c) )
         result = []
-        if len(set) != 0:
+        if len(closest_set) != 0:
             minimum = min(x[0] for x in closest_set)
             for j in closest_set:
                 if j[0] == minimum:
                     result.append(j[1])
 
             return result[0]
+            #return result[-1]
         return []
 
     def getAction(self, stench, breeze, glitter, bump, scream):
@@ -142,7 +143,8 @@ class MyAI(Agent):
         # if self.node_dict.count([1,1]) == 3:
         #     return Agent.Action.CLIMB
         self.calc_safety(stench, breeze, bump)
-
+        if self._coord in self.go_to:
+            self.go_to.remove(self._coord)
         if glitter:
             self.gold_grabbed = True
             return Agent.Action.GRAB
@@ -194,6 +196,9 @@ class MyAI(Agent):
                     self._dir = "down"
                     return Agent.Action.TURN_RIGHT
             elif self._dir == "top":
+                # moving down and left have priority to other moves
+                # since we want to go back to [1,1]
+                # fix the code accordingly
                 if self.left in self._safe_zones:
                     self._dir = "left"
                     return Agent.Action.TURN_LEFT
@@ -267,7 +272,189 @@ class MyAI(Agent):
                         self._dir = "left"
                         return Agent.Action.TURN_LEFT
 
-            elif dist_node[0]>= self._coord[0] and dist_node[1] >= 0 self._coord[1]:
+            elif dest_node[0] >= self._coord[0] and dest_node[1] >= self._coord[1]:
+                if self._dir == "right":
+                    if self.right in self._safe_zones:
+                        self._coord = self.right
+                        return Agent.Action.FORWARD
+
+                    if self.top in self._safe_zones:
+                        self._dir = "top"
+                        return Agent.Action.TURN_LEFT
+                    if self.down in self._safe_zones:
+                        self._dir = "down"
+                        return Agent.Action.TURN_RIGHT
+                    else:
+                        self._dir = "top"
+                        return Agent.Action.TURN_LEFT
+
+                elif self._dir == "top":
+                    if self.top in self._safe_zones:
+                        self._coord = self.top
+                        return Agent.Action.FORWARD
+                    if self.right in self._safe_zones:
+                        self._dir = "right"
+                        return Agent.Action.TURN_RIGHT
+                    if self.left in self._safe_zones:
+                        self._dir = "left"
+                        return Agent.Action.TURN_LEFT
+                    else:
+                        self._dir = "right"
+                        return Agent.Action.TURN_RIGHT
+
+                elif self._dir == "left":
+                    if self.top in self._safe_zones:
+                        self._dir = "top"
+                        return Agent.Action.TURN_RIGHT
+                    if self.right in self._safe_zones:
+                        self._dir = "top"
+                        return Agent.Action.TURN_RIGHT
+                    if self.left in self._safe_zones:
+                        self._coord = self.left
+                        return Agent.Action.FORWARD
+                    else:
+                        self._dir = "down"
+                        return Agent.Action.TURN_LEFT
+
+                elif self._dir == "down":
+                    if self.right in self._safe_zones:
+                        self._dir = "right"
+                        return Agent.Action.TURN_LEFT
+
+                    if self.top in self._safe_zones:
+                        self._dir = "right"
+                        return Agent.Action.TURN_LEFT
+
+                    # in this case where we're facing down and top and right
+                    # are not in safe zone we just move forward to save one move
+                    # we can also go left
+                    # later we can optimize it by choosing between down and left based on
+                    # the one that would take us less further than the destination node
+                    if self.down in self._safe_zones:
+                        self._coord = self.down
+                        return Agent.Action.FORWARD
+                    else:
+                        self._dir = "left"
+                        return Agent.Action.TURN_RIGHT
+
+            elif dest_node[0] <= self._coord[0] and dest_node[1] >= self._coord[1]:
+                if self._dir == "left":
+                    if self.left in self._safe_zones:
+                        self._coord = self.left
+                        return Agent.Action.FORWARD
+                    elif self.top in self._safe_zones:
+                        self._dir = "top"
+                        return Agent.Action.TURN_RIGHT
+                    elif self.down in self._safe_zones:
+                        self._dir = "down"
+                        return Agent.Action.TURN_LEFT
+                    else:
+                        self._dir = "top"
+                        return Agent.Action.TURN_RIGHT
+
+                if self._dir == "top":
+                    if self.top in self._safe_zones:
+                        self._coord = self.top
+                        return Agent.Action.FORWARD
+                    elif self.left in self._safe_zones:
+                        self._dir = "left"
+                        return Agent.Action.TURN_LEFT
+                    elif self.down in self._safe_zones:
+                        self._dir = "left"
+                        return Agent.Action.TURN_LEFT
+                    else:
+                        self._dir = "right"
+                        return Agent.Action.TURN_RIGHT
+
+                if self._dir == "down":
+                    if self.left in self._safe_zones:
+                        self._dir = "left"
+                        return Agent.Action.TURN_RIGHT
+                    elif self.top in self._safe_zones:
+                        self._dir = "right"
+                        return Agent.Action.TURN_RIGHT
+                    elif self.down in self._safe_zones:
+                        self._coord = self.down
+                        return Agent.Action.FORWARD
+                    else:
+                        self._dir = "right"
+                        return Agent.Action.TURN_LEFT
+
+                if self._dir == "right":
+                    if self.top in self._safe_zones:
+                        self._dir = "top"
+                        return Agent.Action.TURN_LEFT
+                    elif self.left in self._safe_zones:
+                        self._dir = "top"
+                        return Agent.Action.TURN_LEFT
+                    elif self.right in self._safe_zones:
+                        self._coord = self.right
+                        return Agent.Action.FORWARD
+                    else:
+                        self._dir = "down"
+                        return Agent.Action.TURN_RIGHT
+
+            elif dest_node[0] >= self._coord[0] and dest_node[1] <= self._coord[1]:
+                if self._dir == "right":
+                    if self.right in self._safe_zones:
+                        self._coord= self.right
+                        return Agent.Action.FORWARD
+                    elif self.down in self._safe_zones:
+                        self._dir = "down"
+                        return Agent.Action.TURN_RIGHT
+                    elif self.top in self._safe_zones:
+                        self._dir = "top"
+                        return Agent.Action.TURN_LEFT
+                    else:
+                        self._dir = "down"
+                        return Agent.Action.TURN_RIGHT
+                if self._dir == "down":
+                    if self.down in self._safe_zones:
+                        self._coord = self.down
+                        return Agent.Action.FORWARD
+                    elif self.right in self._safe_zones:
+                        self._dir = "right"
+                        return Agent.Action.TURN_LEFT
+                    elif self.left in self._safe_zones:
+                        self._dir = "left"
+                        return Agent.Action.TURN_RIGHT
+                    else:
+                        self._dir = "right"
+                        return Agent.Action.TURN_LEFT
+
+                if self._dir == "left":
+                    if self.down in self._safe_zones:
+                        self._dir = "down"
+                        return Agent.Action.TURN_LEFT
+                    elif self.right in self._safe_zones:
+                        self._dir = "down"
+                        return Agent.Action.TURN_LEFT
+                    elif self.left in self._safe_zones:
+                        self._coord= self.left
+                        return Agent.Action.FORWARD
+                    else:
+                        self._dir = "down"
+                        return Agent.Action.TURN_LEFT
+
+                if self._dir == "top":
+                    if self.right in self._safe_zones:
+                        self._dir = "right"
+                        return Agent.Action.TURN_RIGHT
+                    elif self.down in self._safe_zones:
+                        self._dir = "right"
+                        return Agent.Action.TURN_RIGHT
+                    elif self.top in self._safe_zones:
+                        self._coord = self.top
+                        return Agent.Action.FORWARD
+                    else:
+                        self._dir = "right"
+                        return Agent.Action.TURN_RIGHT
+
+
+
+
+
+
 
 
 
