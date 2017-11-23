@@ -20,7 +20,11 @@
 from Agent import Agent
 import math
 
+import pdb
+
+
 class MyAI(Agent):
+
     def __init__(self):
         self._count = 0
         self._coord = [1, 1]
@@ -114,6 +118,7 @@ class MyAI(Agent):
         #     if (self.down in self._range) and (self.down not in self._safe_zones):
         #         self._potentialdanj.append(self.down)
 
+
     def go_to_huristic(self):
         closest_set = []
         for i, c in enumerate(self.go_to):
@@ -125,11 +130,14 @@ class MyAI(Agent):
                 if j[0] == minimum:
                     result.append(j[1])
 
-            return result[0]
-            #return result[-1]
+            # return result[0]
+            return result[-1]
         return []
 
     def getAction(self, stench, breeze, glitter, bump, scream):
+        # print("go to list: ", self.go_to)
+
+
         self.update_dir()
         self.update_senses(stench, breeze, glitter, bump, scream)
 
@@ -150,8 +158,10 @@ class MyAI(Agent):
             return Agent.Action.GRAB
 
         dest_node = self.go_to_huristic()
+        # print("destination nodes: ", dest_node)
 
         if self.gold_grabbed or dest_node == []:
+
             if self._coord == [1, 1]:
                 return Agent.Action.CLIMB
             if self._dir == "left":
@@ -165,8 +175,8 @@ class MyAI(Agent):
                     self._dir = "top"
                     return Agent.Action.TURN_RIGHT
                 else:
-                    self._dir = "top"
-                    return Agent.Action.TURN_RIGHT
+                    self._dir = "down"
+                    return Agent.Action.TURN_LEFT
             elif self._dir == "down":
                 if self.down in self._safe_zones:
                     self._coord = self.down
@@ -178,23 +188,24 @@ class MyAI(Agent):
                     self._dir = "right"
                     return Agent.Action.TURN_LEFT
                 else:
-                    self._dir = "right"
-                    return Agent.Action.TURN_LEFT
+                    self._dir = "left"
+                    return Agent.Action.TURN_RIGHT
+
             elif self._dir == "right":
                 if self.down in self._safe_zones:
                     self._dir = "down"
                     return Agent.Action.TURN_RIGHT
-                if self.top in self._safe_zones:
-                    self._dir = "top"
-                    return Agent.Action.TURN_LEFT
+                if self.left in self._safe_zones:
+                    self._dir = "down"
+                    return Agent.Action.TURN_RIGHT
 
                 if self.right in self._safe_zones:
                     self._coord = self.right
                     return Agent.Action.FORWARD
-
                 else:
-                    self._dir = "down"
-                    return Agent.Action.TURN_RIGHT
+                    self._dir = "top"
+                    return Agent.Action.TURN_LEFT
+
             elif self._dir == "top":
                 # moving down and left have priority to other moves
                 # since we want to go back to [1,1]
@@ -202,10 +213,9 @@ class MyAI(Agent):
                 if self.left in self._safe_zones:
                     self._dir = "left"
                     return Agent.Action.TURN_LEFT
-
-                if self.right in self._safe_zones:
-                    self._dir = "right"
-                    return Agent.Action.TURN_RIGHT
+                if self.down in self._safe_zones:
+                    self._dir = "left"
+                    return Agent.Action.TURN_LEFT
                 if self.top in self._safe_zones:
                     self._coord = self.top
                     return Agent.Action.FORWARD
@@ -214,6 +224,7 @@ class MyAI(Agent):
                     return Agent.Action.TURN_LEFT
         #############################################################################################
         else:
+            # pdb.set_trace()
             if dest_node[0]<= self._coord[0] and dest_node[1]<= self._coord[1]:  #in bottom left
                 if self._dir == "left":
                     if self.left in self._safe_zones:
@@ -371,7 +382,7 @@ class MyAI(Agent):
                         self._dir = "left"
                         return Agent.Action.TURN_RIGHT
                     elif self.top in self._safe_zones:
-                        self._dir = "right"
+                        self._dir = "left"
                         return Agent.Action.TURN_RIGHT
                     elif self.down in self._safe_zones:
                         self._coord = self.down

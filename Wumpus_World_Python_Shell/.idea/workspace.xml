@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/MyAI.py" line="118" mnemonic="9" />
+    <bookmark url="file://$PROJECT_DIR$/src/MyAI.py" line="123" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4aeac98b-0882-4e02-8b7d-68bd72d3b33d" name="Default" comment="" />
@@ -21,9 +21,11 @@
       <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="825">
-              <caret line="58" column="22" lean-forward="false" selection-start-line="58" selection-start-column="17" selection-end-line="58" selection-end-column="22" />
-              <folding />
+            <state relative-caret-position="549">
+              <caret line="61" column="22" lean-forward="false" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="22" />
+              <folding>
+                <element signature="e#1912#1922#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -31,13 +33,9 @@
       <file leaf-file-name="World.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/World.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <marker date="1510620429494" expanded="true" signature="509:13375" ph="..." />
-                <marker date="1510620429494" expanded="true" signature="7253:8824" ph="..." />
-                <marker date="1510620429494" expanded="true" signature="8313:8824" ph="..." />
-              </folding>
+            <state relative-caret-position="180">
+              <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -55,8 +53,8 @@
       <file leaf-file-name="MyAI.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MyAI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="141" column="8" lean-forward="false" selection-start-line="141" selection-start-column="10" selection-end-line="142" selection-end-column="39" />
+            <state relative-caret-position="-1195">
+              <caret line="132" column="12" lean-forward="false" selection-start-line="132" selection-start-column="12" selection-end-line="132" selection-end-column="30" />
               <folding>
                 <element signature="e#823#846#0" expanded="true" />
               </folding>
@@ -81,12 +79,23 @@
       <find>update_coord</find>
       <find>get_coord</find>
       <find>self</find>
+      <find>go_to</find>
+      <find>self._state</find>
+      <find>potentialdanj</find>
+      <find>self._potentialdanj</find>
+      <find>self.go_to.app</find>
       <find>return Agent.Action.FORWARD</find>
+      <find>file</find>
+      <find>numOfScores</find>
+      <find>pdb</find>
+      <find>falses</find>
+      <find>print</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/src/World.py" />
         <option value="$PROJECT_DIR$/src/Main.py" />
         <option value="$PROJECT_DIR$/src/MyAI.py" />
       </list>
@@ -111,8 +120,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -141,6 +148,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -322,7 +331,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -330,7 +341,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="825">
           <caret line="58" column="22" lean-forward="false" selection-start-line="58" selection-start-column="17" selection-end-line="58" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="e#1912#1922#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -338,11 +351,51 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/RandomAI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="32" column="5" lean-forward="false" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MyAI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="29" column="8" lean-forward="false" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
           <folding>
-            <marker date="1510620429494" expanded="true" signature="509:13375" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="7253:8824" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="8313:8824" ph="..." />
+            <element signature="e#823#846#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="825">
+          <caret line="58" column="22" lean-forward="false" selection-start-line="58" selection-start-column="17" selection-end-line="58" selection-end-column="22" />
+          <folding>
+            <element signature="e#1912#1922#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/World.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -376,7 +429,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="825">
           <caret line="58" column="22" lean-forward="false" selection-start-line="58" selection-start-column="17" selection-end-line="58" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="e#1912#1922#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -384,11 +439,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1510620429494" expanded="true" signature="509:13375" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="7253:8824" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="8313:8824" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -422,7 +473,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="825">
           <caret line="58" column="22" lean-forward="false" selection-start-line="58" selection-start-column="17" selection-end-line="58" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="e#1912#1922#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -430,11 +483,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1510620429494" expanded="true" signature="509:13375" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="7253:8824" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="8313:8824" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -468,7 +517,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="825">
           <caret line="58" column="22" lean-forward="false" selection-start-line="58" selection-start-column="17" selection-end-line="58" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="e#1912#1922#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -476,11 +527,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1510620429494" expanded="true" signature="509:13375" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="7253:8824" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="8313:8824" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -502,30 +549,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/World.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1510620429494" expanded="true" signature="509:13375" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="7253:8824" ph="..." />
-            <marker date="1510620429494" expanded="true" signature="8313:8824" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Makefile">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-110">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="825">
-          <caret line="58" column="22" lean-forward="false" selection-start-line="58" selection-start-column="17" selection-end-line="58" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -534,6 +561,24 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/World.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="61" column="22" lean-forward="false" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="22" />
+          <folding>
+            <element signature="e#1912#1922#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -547,8 +592,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MyAI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="141" column="8" lean-forward="false" selection-start-line="141" selection-start-column="10" selection-end-line="142" selection-end-column="39" />
+        <state relative-caret-position="-1195">
+          <caret line="132" column="12" lean-forward="false" selection-start-line="132" selection-start-column="12" selection-end-line="132" selection-end-column="30" />
           <folding>
             <element signature="e#823#846#0" expanded="true" />
           </folding>
