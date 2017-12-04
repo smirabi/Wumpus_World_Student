@@ -55,6 +55,7 @@ class MyAI(Agent):
         self.bump = False
         self.scream = False
         self.go_to = [[1, 1]]
+        self.counter = 0
 
 
     def update_senses(self, stench, breeze, glitter, bump, scream):
@@ -136,7 +137,9 @@ class MyAI(Agent):
 
     def getAction(self, stench, breeze, glitter, bump, scream):
         # print("go to list: ", self.go_to)
-
+        self.counter += 1
+        if self.counter == 1000:
+            print("----------------------------->>>>>>>>>>>>>>>>>> loop !")
 
         self.update_dir()
         self.update_senses(stench, breeze, glitter, bump, scream)
