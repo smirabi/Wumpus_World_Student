@@ -33,7 +33,7 @@ class MyAI(Agent):
         # self._potentialdanj = []
         self._safe_zones = [[1, 1]]
         self.node_dict = [[1, 1]]
-        #self._state = [[self._dir, self._coord]]
+        self._state = [[self._dir, self._coord]]
         self._range = [
             [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1],
             [1, 2], [2, 2], [3, 2], [4, 2], [5, 2], [6, 2], [7, 2], [8, 2],
@@ -57,7 +57,6 @@ class MyAI(Agent):
         self.go_to = [[1, 1]]
         self.counter = 0
 
-
     def update_senses(self, stench, breeze, glitter, bump, scream):
         self.stench = False
         self.breeze = False
@@ -65,8 +64,8 @@ class MyAI(Agent):
         self.bump = False
         self.scream = False
 
-    # def update_state(self):
-    #     self._state.append([self._dir, self._coord])
+    def update_state(self):
+        self._state.append([self._dir, self._coord])
 
     def update_dir(self):
         self.right = [self._coord[0] + 1, self._coord[1]]
@@ -94,7 +93,7 @@ class MyAI(Agent):
                 self._safe_zones.remove(self._coord)
                 self.go_to.remove(self._coord)
                 self._coord = self.down
-            #self._state.remove(self._state[-1])
+            self._state.remove(self._state[-1])
 
         if not stench and not breeze:
             if self.right in self._range and self.right not in self._safe_zones:
@@ -140,9 +139,9 @@ class MyAI(Agent):
         self.counter += 1
         if self.counter == 1000:
             print("----------------------------->>>>>>>>>>>>>>>>>> loop !")
-
         self.update_dir()
         self.update_senses(stench, breeze, glitter, bump, scream)
+        self.update_state()
 
         if (breeze or stench) and (self._coord == [1, 1]):
             return Agent.Action.CLIMB
@@ -163,70 +162,85 @@ class MyAI(Agent):
         dest_node = self.go_to_huristic()
         # print("destination nodes: ", dest_node)
 
-        if self.gold_grabbed or dest_node == []:
+        def trackAndClimb():
+            print("TRACING")
 
             if self._coord == [1, 1]:
+                print("RACING ANd 11 ")
                 return Agent.Action.CLIMB
-            if self._dir == "left":
-                if self.left in self._safe_zones:
+            l = len(self.shortest_path)
+            if l == 0:
+                for s in self._state:
+                    if s[1] != self._coord:
+                        self.shortest_path.append(s)
+                    else:
+                        break
+                for i in range(len(self.shortest_path) - 1, -1, -1):
+                    return go_back(self.shortest_path, i)
+            else:
+                for i in range(len(self.shortest_path) - 1, -1, -1):
+                    return go_back(self.shortest_path, i)
+
+        def go_back(path, i):
+            print("this is shortest path: ", path)
+            print("GOING BACK")
+            if self._coord == [1, 1]:
+                return Agent.Action.CLIMB
+            if path[i][0] == "right":
+                if self._dir == "left":
+                    print("check point 1.1")
+                    path.pop(i)
                     self._coord = self.left
                     return Agent.Action.FORWARD
-                if self.down in self._safe_zones:
-                    self._dir = "down"
-                    return Agent.Action.TURN_LEFT
-                if self.top in self._safe_zones:
+                else:
+                    print("check point 1.2")
                     self._dir = "top"
-                    return Agent.Action.TURN_RIGHT
-                else:
-                    self._dir = "down"
                     return Agent.Action.TURN_LEFT
-            elif self._dir == "down":
-                if self.down in self._safe_zones:
-                    self._coord = self.down
-                    return Agent.Action.FORWARD
-                if self.left in self._safe_zones:
-                    self._dir = "left"
-                    return Agent.Action.TURN_RIGHT
-                if self.right in self._safe_zones:
-                    self._dir = "right"
-                    return Agent.Action.TURN_LEFT
-                else:
-                    self._dir = "left"
-                    return Agent.Action.TURN_RIGHT
-
-            elif self._dir == "right":
-                if self.down in self._safe_zones:
-                    self._dir = "down"
-                    return Agent.Action.TURN_RIGHT
-                if self.left in self._safe_zones:
-                    self._dir = "down"
-                    return Agent.Action.TURN_RIGHT
-
-                if self.right in self._safe_zones:
+            if path[i][0] == "left":
+                if self._dir == "right":
+                    print("check point 2.1")
+                    path.pop(i)
                     self._coord = self.right
                     return Agent.Action.FORWARD
                 else:
-                    self._dir = "top"
+                    print("check point 2.2")
+                    self._dir = "down"
                     return Agent.Action.TURN_LEFT
-
-            elif self._dir == "top":
-                # moving down and left have priority to other moves
-                # since we want to go back to [1,1]
-                # fix the code accordingly
-                if self.left in self._safe_zones:
+            if path[i][0] == "top":
+                if self._dir == "down":
+                    print("check point 3.1")
+                    path.pop(i)
+                    self._coord = self.down
+                    return Agent.Action.FORWARD
+                else:
+                    print("check point 3.2")
                     self._dir = "left"
                     return Agent.Action.TURN_LEFT
-                if self.down in self._safe_zones:
-                    self._dir = "left"
-                    return Agent.Action.TURN_LEFT
-                if self.top in self._safe_zones:
+            if path[i][0] == "down":
+                if self._dir == "top":
+                    print("check point 4.1")
+                    path.pop(i)
                     self._coord = self.top
                     return Agent.Action.FORWARD
                 else:
-                    self._dir = "left"
+                    print("check point 4.2")
+                    self._dir = "right"
                     return Agent.Action.TURN_LEFT
+        if self.gold_grabbed or dest_node == []:
+            #trackAndClimb()
+            if self._coord == [1, 1]:
+                return Agent.Action.CLIMB
+            dest_node = [1, 1]
+
+
+        # first try to get the trace and go back to run
+        # if it didn't work:
+        #   for optimization we can chose a randomize choosing direction
+        #   in the last direction choosing
+        # at last try to shoot an arrow
         #############################################################################################
-        else:
+        #else:
+        if True:
             # pdb.set_trace()
             if dest_node[0]<= self._coord[0] and dest_node[1]<= self._coord[1]:  #in bottom left
                 if self._dir == "left":
